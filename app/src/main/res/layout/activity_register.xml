@@ -50,6 +50,7 @@
                 android:layout_height="48dp"
                 android:hint="Enter Name..."
                 android:textColorHint="#D3CFCF"
+                android:textColor="@color/white"
                 android:background="@drawable/input_field"
                 android:singleLine="true"
                 android:inputType="textEmailAddress"/>
@@ -61,6 +62,7 @@
                 android:layout_marginTop="20dp"
                 android:hint="Enter Email..."
                 android:textColorHint="#D3CFCF"
+                android:textColor="@color/white"
                 android:background="@drawable/input_field"
                 android:singleLine="true"
                 android:inputType="textEmailAddress"/>
@@ -71,6 +73,7 @@
                 android:layout_height="48dp"
                 android:hint="Enter Password..."
                 android:textColorHint="#D3CFCF"
+                android:textColor="@color/white"
                 android:background="@drawable/input_field"
                 android:layout_marginTop="20dp"
                 android:singleLine="true"

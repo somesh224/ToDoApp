@@ -1,9 +1,11 @@
 package com.somesh.todoapp
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,9 @@ import org.json.JSONObject
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val utilService = UtilService()
+    private lateinit var name: String
+    private lateinit var email: String
+    private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +39,11 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val name = binding.nameET
-        val email = binding.emailET
-        val password = binding.passwordET
-
         binding.registerBtn.setOnClickListener {
             utilService.closeKeyBoard(this)
-            name.text.toString()
-            email.text.toString()
-            password.text.toString()
+            name = binding.nameET.text.toString()
+            email = binding.emailET.text.toString()
+            password = binding.passwordET.text.toString()
             if (validate(view)) {
                 registerUser(view)
             }
@@ -56,15 +57,15 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser(view: View) {
-        val name = binding.nameET
-        val email = binding.emailET
-        val password = binding.passwordET
+        name = binding.nameET.text.toString()
+        email = binding.emailET.text.toString()
+        password = binding.passwordET.text.toString()
 
         binding.progressBar.visibility = View.VISIBLE
         val params: HashMap<String, String> = HashMap()
-        params["username"] = name.text.toString()
-        params["email"] = email.text.toString()
-        params["password"] = password.text.toString()
+        params["username"] = name
+        params["email"] = email
+        params["password"] = password
 
         //converting above hashmap to json object
         val jsonObject = JSONObject(params as Map<*, *>)
@@ -81,6 +82,9 @@ class RegisterActivity : AppCompatActivity() {
                 try {
                     if(response.getBoolean("success")) {
                         val token = response.getString("token")
+                        val sharedPreferences = getSharedPreferences(getString(R.string.USER_PREF), MODE_PRIVATE).edit()
+                        sharedPreferences.putString("token",token)
+                        sharedPreferences.apply()
                         Toast.makeText(this,token,Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
@@ -137,7 +141,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-    fun validate(view: View): Boolean {
+    private fun validate(view: View): Boolean {
         val isValid: Boolean
         if (!TextUtils.isEmpty(binding.nameET.text.toString())) {
             if (!TextUtils.isEmpty(binding.emailET.text.toString())) {
@@ -156,5 +160,15 @@ class RegisterActivity : AppCompatActivity() {
             isValid = false
         }
         return isValid
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val sharedPreferences = getSharedPreferences(getString(R.string.USER_PREF), MODE_PRIVATE)
+        if(sharedPreferences.contains("token")) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
