@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.2"
+cardview = "1.0.0"
 circleimageview = "3.1.0"
 kotlin = "1.9.22"
 coreKtx = "1.13.1"
@@ -8,13 +9,17 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-activity = "1.9.1"
+activity = "1.9.2"
 constraintlayout = "2.1.4"
+recyclerview = "1.3.2"
 volley = "1.2.1"
 picasso = "2.71828"
 
+
 [libraries]
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -25,6 +30,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 volley = { module = "com.android.volley:volley", version.ref = "volley" }
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

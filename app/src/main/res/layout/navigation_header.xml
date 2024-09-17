@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:id="@+id/nav_header_main"
+    android:background="@drawable/header_bg">
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/img_shadow"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/avatar"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="38dp"
+        android:src="@drawable/todo_logo_2"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/avatar"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="5dp"
+        android:text="Somesh Mishra"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="5dp"
+        android:text="someshmishra224@gmail.com"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</RelativeLayout>

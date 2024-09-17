@@ -77,8 +77,8 @@ class Login : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
 
         //creating a json object request
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, apiKey, jsonObject,
+        val jsonObjectRequest = object : JsonObjectRequest(
+            Method.POST, apiKey, jsonObject,
             { response: JSONObject ->
                 try {
                     if(response.getBoolean("success")) {
@@ -118,13 +118,12 @@ class Login : AppCompatActivity() {
                     }
                 }
             }
-        )
-
-        //setting headers
-        fun Header(): MutableMap<String, String> {
-            val headers = HashMap<String, String>()
-            headers["Content-Type"] = "application/json"
-            return params
+        ) {
+            fun getHeader(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                return params
+            }
         }
 
         // set retry policy
