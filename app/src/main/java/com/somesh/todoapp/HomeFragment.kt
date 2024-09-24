@@ -26,6 +26,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.somesh.todoapp.adapter.TodoListAdapter
+import com.somesh.todoapp.interfaces.RecyclerViewClickListener
 import com.somesh.todoapp.model.TodoModel
 import org.json.JSONArray
 import org.json.JSONException
@@ -90,7 +91,56 @@ class HomeFragment : Fragment() {
                                     )
                                     arrayList.add(todoModel)
                                 }
-                                todoListAdapter = TodoListAdapter(requireContext(), arrayList)
+                                todoListAdapter = TodoListAdapter(
+                                    requireContext(),
+                                    arrayList,
+                                    object : RecyclerViewClickListener {
+                                        override fun onItemClick(position: Int) {
+                                            Toast.makeText(
+                                                requireActivity(),
+                                                "position $position",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        override fun onLongItemClick(position: Int) {
+                                            Toast.makeText(
+                                                requireActivity(),
+                                                "position $position",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        override fun onEditButtonClick(position: Int) {
+                                            showUpdateDialog(
+                                                arrayList[position].id,
+                                                arrayList[position].title,
+                                                arrayList[position].description
+                                            )
+                                            Toast.makeText(
+                                                requireActivity(),
+                                                "position ${arrayList[position].title}",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        override fun onDoneButtonClick(position: Int) {
+                                            Toast.makeText(
+                                                requireActivity(),
+                                                "position $position",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        override fun onDeleteButtonClick(position: Int) {
+                                            Toast.makeText(
+                                                requireActivity(),
+                                                "position $position",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                    })
                                 recyclerView.adapter = todoListAdapter
                             }
                             progressBar.visibility = View.GONE
@@ -100,7 +150,8 @@ class HomeFragment : Fragment() {
                         }
                     },
                     { error: VolleyError ->
-                        Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_SHORT)
+                            .show()
                         val networkResponse: NetworkResponse? = error.networkResponse
                         if (error is ServerError && networkResponse != null) {
                             try {
@@ -189,6 +240,37 @@ class HomeFragment : Fragment() {
         alertDialogBuilder.show()
     }
 
+    private fun showUpdateDialog(id: String, title: String, description: String) {
+        val alertLayout = layoutInflater.inflate(R.layout.custom_dialog_layout, null)
+        val titleField = alertLayout.findViewById<EditText>(R.id.title)
+        val descriptionField = alertLayout.findViewById<EditText>(R.id.description)
+
+        val alertDialogBuilder =
+            AlertDialog.Builder(requireContext())
+                .setView(alertLayout)
+                .setTitle("Update Task")
+                .setPositiveButton("Update", null)
+                .setNegativeButton("Cancel", null)
+                .create()
+
+        alertDialogBuilder.setOnShowListener {
+            val positiveBtn = alertDialogBuilder.getButton(AlertDialog.BUTTON_POSITIVE)
+            val negativeBtn = alertDialogBuilder.getButton(AlertDialog.BUTTON_NEGATIVE)
+            positiveBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            negativeBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+            positiveBtn.setOnClickListener {
+                val updatedTitle = titleField.getText().toString()
+                val updatedDescription = descriptionField.getText().toString()
+                Toast.makeText(
+                    requireActivity(),
+                    "$updatedTitle  $updatedDescription",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        alertDialogBuilder.show()
+    }
+
     // Add ToDo task method
     private fun addTask(title: String, description: String) {
         val queue = Volley.newRequestQueue(requireContext())
@@ -244,8 +326,7 @@ class HomeFragment : Fragment() {
                                         requireContext(),
                                         "Error Parsing Response",
                                         Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                                    ).show()
                                 }
                             } catch (e: JSONException) {
                                 e.printStackTrace()
